@@ -8,27 +8,29 @@ root.title('test_Form')
 root.geometry('200x200')
 
 
-def GetFilePath():  # return String
-    src = filedialog.askopenfilename()
-
-
 def show():
-    file_path = filedialog.askopenfilename()  # 選擇檔案後回傳檔案路徑與名稱
-    read_file = cv2.imread(file_path)
-    cv2.resize(read_file, (1024, 1024), interpolation=cv2.INTER_AREA)
-    cv2.imshow("read_pic", read_file)
+    file_path = filedialog.askopenfilename(parent = root,
+                                           filetypes = (
+                                               ("Bitmap Image", "*.bmp"),
+                                               ("jpeg files", "*.jpeg"),
+                                               ("jpg files", "*.jpg"),
+                                               ("all files", "*.*")
+                                           ))  # 選擇檔案後回傳檔案路徑與名稱
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("output", 1024, 1024)
+    img = cv2.imread(file_path)
+    cv2.imshow("output", img)
     print(file_path)  # 印出路徑
 
     return file_path
 
 
-# Button 設定 command 參數，點擊按鈕時執行 show 函式
-btn_LoadFile = tk.Button(root,
-                         text='開啟檔案',
-                         font=('Arial', 20, 'bold'),
-                         command=show
-                         )
-
-btn_LoadFile.pack()
-
-root.mainloop()
+def ReadFile():  # 顯示檔案選擇器後開啟影像
+    btn_LoadFile = tk.Button(root,  # Button 設定 command 參數，點擊按鈕時執行 show 函式
+                             text='開啟檔案',
+                             font=('Arial', 20, 'bold'),
+                             command=show
+                             )
+    btn_LoadFile.pack()
+    root.mainloop()
+    return show()
